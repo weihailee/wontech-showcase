@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>원텍(WONTECH) - 주문형 자동화 설비 및 검사기 제작 전시장</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #26354d;
+            --accent: #38bdf8;
+            --accent-strong: #0284c7;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: #334155;
+            --badge-video: #ef4444;
+            --badge-photo: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', '맑은 고딕', sans-serif;
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        /* 상단 헤더 */
+        header {
+            background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);
+            border-bottom: 2px solid var(--border-color);
+            padding: 36px 20px;
+            text-align: center;
+        }
+
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .brand-badge {
+            display: inline-block;
+            background-color: rgba(56, 189, 248, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 1.15rem;
+            max-width: 780px;
+            margin: 0 auto 24px auto;
+            word-break: keep-all;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+        }
+
+        .stat-item strong {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-left: 6px;
+        }
+
+        /* 카테고리 필터 바 */
+        .filter-container {
+            max-width: 1280px;
+            margin: 28px auto 10px auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: var(--bg-card);
+            color: var(--text-sub);
+            border: 1px solid var(--border-color);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent-strong);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .guide-tip {
+            color: #fbbf24;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* 메인 장비 그리드 */
+        .grid-container {
+            max-width: 1280px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        .machine-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .machine-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+            background-color: var(--bg-card-hover);
+        }
+
+        .thumb-wrapper {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            background-color: #090d16;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .thumb-wrapper img,
+        .thumb-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .machine-card:hover .thumb-wrapper img,
+        .machine-card:hover .thumb-wrapper video {
+            transform: scale(1.04);
+        }
+
+        .media-badges {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #fff;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        }
+
+        .badge.video {
+            background-color: rgba(239, 68, 68, 0.9);
+        }
+
+        .badge.photo {
+            background-color: rgba(16, 185, 129, 0.9);
+        }
+
+        .play-overlay {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            color: var(--accent);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cat-tag {
+            font-size: 0.82rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .card-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            color: var(--text-sub);
+            font-size: 0.96rem;
+            margin-bottom: 16px;
+            flex: 1;
+            word-break: keep-all;
+        }
+
+        .spec-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .spec-tag {
+            background: rgba(255, 255, 255, 0.06);
+            color: #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.82rem;
+        }
+
+        .view-btn {
+            width: 100%;
+            background-color: rgba(56, 189, 248, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 11px;
+            border-radius: 8px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            text-align: center;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .machine-card:hover .view-btn {
+            background-color: var(--accent-strong);
+            color: #fff;
+        }
+
+        /* 모달 (상세 사진/동영상 뷰어) */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 1024px;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-header {
+            padding: 18px 24px;
+            background-color: #0f172a;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .close-btn {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .main-viewer {
+            width: 100%;
+            height: 480px;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .main-viewer video,
+        .main-viewer img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .media-selector-label {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .media-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .media-item-btn {
+            background-color: #0f172a;
+            color: #cbd5e1;
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .media-item-btn:hover {
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .media-item-btn.active {
+            background-color: var(--accent-strong);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .modal-desc-box {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--border-color);
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .modal-desc-box h4 {
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        /* 하단 안내 푸터 */
+        footer {
+            max-width: 1280px;
+            margin: 50px auto 0 auto;
+            padding: 30px 20px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-sub);
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 1.8rem; }
+            .grid-container { grid-template-columns: 1fr; }
+            .main-viewer { height: 280px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-inner">
+            <div class="brand-badge">WONTECH CUSTOM AUTOMATION ARCHIVE</div>
+            <h1>원텍(<span>WONTECH</span>) 제작 장비 전시장</h1>
+            <p class="subtitle">
+                기구 설계부터 전장 제어, 비전 및 펌웨어 검사까지.<br>
+                실제 양산 현장의 병목을 해결하기 위해 직접 설계·제작하여 납품한 주문형 자동화 설비 및 지그 포트폴리오입니다.
+            </p>
+            <div class="stats-bar">
+                <div class="stat-item">전시 장비 분야 <strong>14종</strong></div>
+                <div class="stat-item">실제 가동 동영상 <strong>27편</strong></div>
+                <div class="stat-item">현장 설비 사진 <strong>26장</strong></div>
+                <div class="stat-item">도메인 <strong>www.wontech.ai.kr</strong></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="filter-container">
+        <div class="filter-tabs">
+            <button class="filter-btn active" onclick="filterMachines('all', this)">전체 장비 보기 (14)</button>
+            <button class="filter-btn" onclick="filterMachines('검사/테스트', this)">검사·테스터 설비</button>
+            <button class="filter-btn" onclick="filterMachines('조립/체결/부착', this)">조립·체결·부착 자동화</button>
+            <button class="filter-btn" onclick="filterMachines('로봇/가공/납땜', this)">로봇·납땜·가공기</button>
+        </div>
+        <div class="guide-tip">💡 각 장비를 클릭하시면 실제 작동 동영상과 여러 각도의 사진을 보실 수 있습니다.</div>
+    </div>
+
+    <main class="grid-container" id="machineGrid"></main>
+
+    <!-- 상세 모달 -->
+    <div class="modal-backdrop" id="detailModal" onclick="closeModalOnBackdrop(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">장비명</div>
+                <button class="close-btn" onclick="closeModal()">✕ 닫기</button>
+            </div>
+            <div class="modal-body">
+                <div class="main-viewer" id="mainViewer"></div>
+                <div class="media-selector-label">🎬 작동 동영상 및 현장 사진 선택 (클릭하여 재생/보기)</div>
+                <div class="media-list" id="mediaList"></div>
+                <div class="modal-desc-box">
+                    <h4>📋 장비 핵심 특징 및 제작 사양</h4>
+                    <p id="modalDesc"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>원텍 (WONTECH)</strong> | 맞춤형 공장 자동화 설비 · 지그 · 비전 검사기 설계 및 제작</p>
+        <p style="margin-top: 6px; font-size: 0.9rem;">Website: www.wontech.ai.kr</p>
+    </footer>
+
+    <script>
+        const machines = [
+            {
+                id: "keytest",
+                category: "검사/테스트",
+                title: "고속 다채널 키(Key) 테스터 자동화 설비",
+                desc: "리모컨 및 전자기기의 다수 키(Key)/돔 스위치를 다채널(4~6열 병렬)로 동시 진입시켜 고속 타점 및 접점 통전 검사를 수행하는 자동화 검사기입니다.",
+                specs: ["다채널 병렬 검사", "고속 갠트리/실린더 타점", "불량(NG) 판정 표시창"],
+                thumbType: "image",
+                thumbSrc: "media_web/키테스터기/20200717_102734.jpg",
+                videos: [
+                    { name: "고속 키테스트 가동 영상 1", src: "media_web/키테스터기/KeyTest/20180111_KeyTest1.mp4" },
+                    { name: "다채널 키테스터 가동 영상 2", src: "media_web/키테스터기/KeyTest/20200622_110624.mp4" },
+                    { name: "키테스트 공정 영상 3", src: "media_web/키테스터기/KeyTest/20170816_KeyTest.mp4" },
+                    { name: "키테스터 메커니즘 영상 4", src: "media_web/키테스터기/KeyTest/20160628_091223.mp4" },
+                    { name: "연속 타점 테스트 영상 5", src: "media_web/키테스터기/KeyTest/20160628_091307.mp4" },
+                    { name: "장비 전체 가동 영상 6", src: "media_web/키테스터기/KeyTest/20150425_151321.mp4" }
+                ],
+                photos: [
+                    { name: "4채널 키테스터 전면", src: "media_web/키테스터기/20200717_102734.jpg" },
+                    { name: "인라인 키테스터 설비", src: "media_web/키테스터기/20160617_140930.jpg" },
+                    { name: "키테스터 외관 1", src: "media_web/키테스터기/20150425_144417.jpg" },
+                    { name: "키테스터 지그부", src: "media_web/키테스터기/20141119_183535.jpg" },
+                    { name: "키테스터 제어부", src: "media_web/키테스터기/20141119_183601.jpg" },
+                    { name: "초기형 키테스터", src: "media_web/키테스터기/20140107_100100.jpg" }
+                ]
+            },
+            {
+                id: "domesheet",
+                category: "조립/체결/부착",
+                title: "PBA 다운로드 & 메탈 돔시트 박리·부착기",
+                desc: "롤 형태로 공급되는 메탈 돔 시트의 이형지를 정밀 박리(Peeling)한 뒤, 진공 픽업 헤드로 흡착하여 PCB 기판 정위치에 기포 없이 압착 부착하는 인라인 설비입니다.",
+                specs: ["자동 이형지 박리 유닛", "진공 흡착 픽앤플레이스", "터치스크린 HMI 제어"],
+                thumbType: "image",
+                thumbSrc: "media_web/돔시트부착기/20130416_111504.jpg",
+                videos: [
+                    { name: "돔시트 자동 박리 및 부착 가동 영상", src: "media_web/돔시트부착기/DomeSheet/dome_sheet.mp4" }
+                ],
+                photos: [
+                    { name: "돔시트 부착기 전체 외관", src: "media_web/돔시트부착기/20130416_111504.jpg" }
+                ]
+            },
+            {
+                id: "autosolder",
+                category: "로봇/가공/납땜",
+                title: "멀티 릴 자동 납땜기 (Auto Soldering Machine)",
+                desc: "다수의 와이어/부품 공급 릴과 회전 인덱스 테이블을 결합하여, 케이블 탈피·트위스트 및 정밀 자동 납땜(Soldering) 공정을 무인화한 로터리 자동화 장비입니다.",
+                specs: ["로터리 인덱스 테이블", "다축 자동 솔더링", "와이어 트위스트 연동"],
+                thumbType: "image",
+                thumbSrc: "media_web/AutoSolder/오토솔다사진.jpg",
+                videos: [
+                    { name: "자동 납땜 가동 영상 1", src: "media_web/AutoSolder/20131024_Solder.mp4" },
+                    { name: "자동 납땜 연속 공정 2", src: "media_web/AutoSolder/AutoSolder/20131024_Solder1.mp4" },
+                    { name: "솔더링 헤드 동작 영상 3", src: "media_web/AutoSolder/AutoSolder/20131024_Solder2.mp4" },
+                    { name: "와이어 트위스트 및 납땜 4", src: "media_web/AutoSolder/AutoSolder/20140619_SolderTwist.mp4" },
+                    { name: "양산 가동 영상 5", src: "media_web/AutoSolder/AutoSolder/20140619_Solder4.mp4" },
+                    { name: "고속 솔더링 공정 6", src: "media_web/AutoSolder/AutoSolder/20140625_Solder5.mp4" }
+                ],
+                photos: [
+                    { name: "오토솔더 전체 외관", src: "media_web/AutoSolder/오토솔다사진.jpg" },
+                    { name: "솔더링 작업부 상세", src: "media_web/AutoSolder/20131024_230256.jpg" }
+                ]
+            },
+            {
+                id: "zairo",
+                category: "검사/테스트",
+                title: "자이로(Gyro) 센서 다축 모션 특성 검사기",
+                desc: "자이로 센서 및 모션 인식 모듈이 장착된 제품을 다축 회전/틸팅 짐벌 지그에 안착시켜, 상하·좌우 각도 변화에 따른 센서 응답 특성을 정밀 측정하는 듀얼 챔버 설비입니다.",
+                specs: ["듀얼 모션 짐벌 지그", "다축 회전/틸팅 제어", "PC 연동 실시간 판정"],
+                thumbType: "image",
+                thumbSrc: "media_web/Zairo/20130416_105108.jpg",
+                videos: [
+                    { name: "자이로 테스터 모션 가동 영상 1", src: "media_web/Zairo/Zairo/20180111_Zairo.mp4" },
+                    { name: "자이로 센서 연속 검사 영상 2", src: "media_web/Zairo/Zairo/20200622_110752.mp4" }
+                ],
+                photos: [
+                    { name: "듀얼 자이로 검사 설비 전면", src: "media_web/Zairo/20130416_105108.jpg" },
+                    { name: "자이로 짐벌 지그 상세", src: "media_web/Zairo/20130410_103311.jpg" }
+                ]
+            },
+            {
+                id: "labeling",
+                category: "조립/체결/부착",
+                title: "고속 자동 라벨 박리 및 부착기 (Auto Labeler)",
+                desc: "롤 라벨 피더에서 라벨을 자동으로 박리한 후, 다연장 진공 흡착 실린더 헤드가 픽업하여 대상 제품 표면에 정밀하게 안착·부착하는 자동화 설비입니다.",
+                specs: ["정밀 텐션 라벨 피더", "다연장 진공 픽업 헤드", "고속 자동 라벨링"],
+                thumbType: "image",
+                thumbSrc: "media_web/라벨부착기/20180504_090902.jpg",
+                videos: [
+                    { name: "자동 라벨 부착기 가동 영상", src: "media_web/라벨부착기/Labeling/20180427_Label.mp4" }
+                ],
+                photos: [
+                    { name: "라벨 공급 롤러 및 박리부", src: "media_web/라벨부착기/20180504_090902.jpg" },
+                    { name: "라벨 부착 설비 전체 외관", src: "media_web/라벨부착기/20200622_110958.jpg" }
+                ]
+            },
+            {
+                id: "firmware",
+                category: "검사/테스트",
+                title: "다연장 PCB 펌웨어 라이팅 및 통전 검사기",
+                desc: "6개 이상의 멀티 PCB 어레이를 지그에 동시 안착시키고, 공압 프레스와 다수의 포고핀(Pogo-pin) 블록을 하강시켜 펌웨어 다운로드(Writing)와 전류/성능 검사를 일괄 처리합니다.",
+                specs: ["6채널 동시 라이팅/검사", "고밀도 포고핀 블록", "OK/NG 개별 LED 표시"],
+                thumbType: "image",
+                thumbSrc: "media_web/펌웨어라이팅/20140724_150004.jpg",
+                videos: [
+                    { name: "펌웨어 라이팅 공정 영상 1", src: "media_web/펌웨어라이팅/Writing/20160205_094432.mp4" },
+                    { name: "자동 다운로드 및 검사 영상 2", src: "media_web/펌웨어라이팅/Writing/20200622_105020.mp4" },
+                    { name: "연속 라이팅 가동 영상 3", src: "media_web/펌웨어라이팅/Writing/20200622_105640.mp4" },
+                    { name: "인라인 라이팅 설비 영상 4", src: "media_web/펌웨어라이팅/Writing/20200622_105935.mp4" }
+                ],
+                photos: [
+                    { name: "6채널 PCB 성능 검사 및 라이팅기", src: "media_web/펌웨어라이팅/20140724_150004.jpg" }
+                ]
+            },
+            {
+                id: "screw",
+                category: "조립/체결/부착",
+                title: "듀얼 스핀들 자동 나사 체결기 (Screw Fastener)",
+                desc: "자동 나사 공급기(Feeder)와 2축 전동 드라이버 유닛, 공압 이송 실린더를 결합하여 제품 양측 또는 다수 포인트의 스크류를 동시에 정밀 토크로 체결하는 장비입니다.",
+                specs: ["듀얼 전동 드라이버", "자동 스크류 피더 내장", "정밀 토크/깊이 제어"],
+                thumbType: "image",
+                thumbSrc: "media_web/나사체결기/20210731_101649.jpg",
+                videos: [],
+                photos: [
+                    { name: "듀얼 스핀들 체결부 상단", src: "media_web/나사체결기/20210731_101649.jpg" },
+                    { name: "나사체결기 정면 전체", src: "media_web/나사체결기/20210618_114107.jpg" },
+                    { name: "체결 지그 및 가이드 상세 1", src: "media_web/나사체결기/20210313_072525.jpg" },
+                    { name: "체결 지그 상세 2", src: "media_web/나사체결기/20210313_072606.jpg" },
+                    { name: "설비 측면 및 피더 구조", src: "media_web/나사체결기/20210311_112428.jpg" },
+                    { name: "조립 공정 테스트 1", src: "media_web/나사체결기/20210304_135628.jpg" },
+                    { name: "조립 공정 테스트 2", src: "media_web/나사체결기/20210304_135638.jpg" }
+                ]
+            },
+            {
+                id: "delta",
+                category: "로봇/가공/납땜",
+                title: "델타 로봇(Delta Robot) 고속 픽앤플레이스 시스템",
+                desc: "3축 병렬 링크 구조의 델타 로봇 메커니즘을 적용하여 컨베이어 및 작업대 위의 부품을 초고속으로 집어(Pick) 지정된 위치로 정렬·이송(Place)하는 로봇 자동화 설비입니다.",
+                specs: ["병렬 링크 델타 메커니즘", "초고속 픽앤플레이스", "정밀 위치 반복성"],
+                thumbType: "video",
+                thumbSrc: "media_web/Delta/20200506_Delta1.mp4",
+                videos: [
+                    { name: "델타 로봇 고속 운전 영상 1", src: "media_web/Delta/20200506_Delta1.mp4" },
+                    { name: "델타 로봇 연속 동작 영상 2", src: "media_web/Delta/20200506_Delta.mp4" }
+                ],
+                photos: []
+            },
+            {
+                id: "counterbore",
+                category: "로봇/가공/납땜",
+                title: "자동 카운터보어(CounterBore) 전용 가공기",
+                desc: "소재 자동 공급 매거진과 다축 스핀들 헤드, 별도의 터치 제어반을 갖추어 부품의 카운터보어(단차 구멍) 가공을 무인 연속 공정으로 처리하는 전용 공작 설비입니다.",
+                specs: ["전용 스핀들 가공 헤드", "독립형 HMI 콘솔", "자동 소재 투입/배출"],
+                thumbType: "image",
+                thumbSrc: "media_web/CounterBore/20120725_100620.jpg",
+                videos: [
+                    { name: "카운터보어 자동 가공 영상 1", src: "media_web/CounterBore/CounterBore/121007_CB.mp4" },
+                    { name: "카운터보어 연속 양산 영상 2", src: "media_web/CounterBore/CounterBore/20140126_CB1.mp4" }
+                ],
+                photos: [
+                    { name: "카운터보어 전용기 전체 외관", src: "media_web/CounterBore/20120725_100620.jpg" }
+                ]
+            },
+            {
+                id: "qr",
+                category: "검사/테스트",
+                title: "QR / 바코드 비전 자동 리딩 및 분류 시스템",
+                desc: "이송되는 제품의 QR 코드 및 바코드를 스캐너/비전으로 고속 판독하여 데이터 매칭 및 양·불 판정을 자동으로 수행하는 이력 관리 자동화 설비입니다.",
+                specs: ["고속 QR/바코드 스캐닝", "데이터 자동 검증", "불량 판독 즉시 알람"],
+                thumbType: "video",
+                thumbSrc: "media_web/QR/20170210_QR.mp4",
+                videos: [
+                    { name: "QR 코드 자동 리딩 가동 영상 1", src: "media_web/QR/20170210_QR.mp4" },
+                    { name: "QR 검사 라인 가동 영상 2", src: "media_web/QR/20170220_QR1.mp4" }
+                ],
+                photos: []
+            },
+            {
+                id: "bluetooth",
+                category: "검사/테스트",
+                title: "블루투스(Bluetooth) 멀티 어레이 실드박스 검사기",
+                desc: "공압 실드박스(Pneumatic Shield Box) 내부에 6개의 PCB 모듈을 동시 안착시켜 외부 전파를 차단한 상태에서 블루투스 RF 통신 및 페어링 성능을 일괄 검사하는 시스템입니다.",
+                specs: ["공압 실드박스 2열 구성", "6채널 동시 RF/페어링 검사", "PC 통합 모니터링 UI"],
+                thumbType: "image",
+                thumbSrc: "media_web/블루투스/20130410_103400.jpg",
+                videos: [
+                    { name: "블루투스 자동 검사 공정 영상", src: "media_web/블루투스/Bluetooth/20130718_BT.mp4" }
+                ],
+                photos: [
+                    { name: "블루투스 멀티 어레이 검사 라인", src: "media_web/블루투스/20130410_103400.jpg" }
+                ]
+            },
+            {
+                id: "fitting",
+                category: "조립/체결/부착",
+                title: "케이스 상·하판 자동 형합기 (Housing Press)",
+                desc: "양측 안전 광축 센서(Area Sensor)로 작업자 안전을 확보하며, 상부 다단 공압 실린더를 이용해 전자제품 케이스의 상·하부 하우징을 균일한 압력으로 정밀 결합(형합)하는 프레스 설비입니다.",
+                specs: ["안전 광축 센서 장착", "복합 공압 프레스 유닛", "스크래치 방지 전용 지그"],
+                thumbType: "image",
+                thumbSrc: "media_web/형합기/20170821_122858.jpg",
+                videos: [
+                    { name: "자동 형합기 프레스 가동 영상", src: "media_web/형합기/형합기/20200626_090545.mp4" }
+                ],
+                photos: [
+                    { name: "형합기 현장 라인 설치 외관", src: "media_web/형합기/20170821_122858.jpg" },
+                    { name: "형합기 프레임 및 전장부", src: "media_web/형합기/ttt.jpg" }
+                ]
+            },
+            {
+                id: "wheeltest",
+                category: "검사/테스트",
+                title: "마우스/리모컨 휠(Wheel) 내구 및 엔코더 테스터",
+                desc: "휠 스크롤 부품의 회전 마찰력과 엔코더 펄스 신호를 자동으로 반복 구동하며 측정하여, 휠 불량 여부를 정밀 판별하는 전용 검사 장비입니다.",
+                specs: ["자동 휠 회전 구동부", "엔코더 신호 정밀 계측", "터치스크린 컨트롤러"],
+                thumbType: "image",
+                thumbSrc: "media_web/휠테스터/20141110_093104.jpg",
+                videos: [
+                    { name: "휠 테스터 연속 가동 영상", src: "media_web/휠테스터/WheelTest/20200622_111046.mp4" }
+                ],
+                photos: [
+                    { name: "휠 테스터 장비 상부 및 제어창", src: "media_web/휠테스터/20141110_093104.jpg" }
+                ]
+            },
+            {
+                id: "wheelrubber",
+                category: "조립/체결/부착",
+                title: "휠 러버(Wheel Rubber) 및 대형 부표 커버 조립기",
+                desc: "파츠피더와 정밀 인덱스 턴테이블을 이용해 소형 휠 외주면에 고무(러버)를 자동 조립하는 설비 및 대형 원통형 부표 커버를 회전·압착하는 중대형 산업용 회전 설비입니다.",
+                specs: ["파츠피더 자동 공급", "정밀 턴테이블 인덱스", "대형 롤러 회전 압착"],
+                thumbType: "image",
+                thumbSrc: "media_web/휠라바체결기/20200420_093527.jpg",
+                videos: [],
+                photos: [
+                    { name: "휠 러버 체결 턴테이블 메커니즘", src: "media_web/휠라바체결기/20200420_093527.jpg" },
+                    { name: "휠 러버 파츠피더 및 공급 라인", src: "media_web/휠라바체결기/20200402_092709.jpg" },
+                    { name: "대형 부표 커버 롤링 설비", src: "media_web/부표카바/20210420_093319.jpg" }
+                ]
+            }
+        ];
+
+        function renderMachines(filter = 'all') {
+            const grid = document.getElementById('machineGrid');
+            grid.innerHTML = '';
+
+            const filtered = filter === 'all'
+                ? machines
+                : machines.filter(m => m.category === filter);
+
+            filtered.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'machine-card';
+                card.onclick = () => openModal(m.id);
+
+                const thumbMedia = m.thumbType === 'video'
+                    ? `<video src="${m.thumbSrc}" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause()"></video>`
+                    : `<img src="${m.thumbSrc}" alt="${m.title}" loading="lazy">`;
+
+                const vCount = m.videos.length;
+                const pCount = m.photos.length;
+
+                card.innerHTML = `
+                    <div class="thumb-wrapper">
+                        ${thumbMedia}
+                        <div class="media-badges">
+                            ${vCount > 0 ? `<span class="badge video">▶ 영상 ${vCount}</span>` : ''}
+                            ${pCount > 0 ? `<span class="badge photo">📷 사진 ${pCount}</span>` : ''}
+                        </div>
+                        ${vCount > 0 ? `<div class="play-overlay">🎬 작동 영상 보유</div>` : ''}
+                    </div>
+                    <div class="card-body">
+                        <div class="cat-tag">${m.category}</div>
+                        <div class="card-title">${m.title}</div>
+                        <p class="card-desc">${m.desc}</p>
+                        <div class="spec-tags">
+                            ${m.specs.map(s => `<span class="spec-tag">#${s}</span>`).join('')}
+                        </div>
+                        <div class="view-btn">상세 사진 및 작동 영상 보기 →</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterMachines(category, btnEl) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btnEl.classList.add('active');
+            renderMachines(category);
+        }
+
+        function openModal(id) {
+            const m = machines.find(item => item.id === id);
+            if (!m) return;
+
+            document.getElementById('modalTitle').textContent = m.title;
+            document.getElementById('modalDesc').textContent = m.desc;
+
+            const mediaList = document.getElementById('mediaList');
+            mediaList.innerHTML = '';
+
+            const allMedia = [
+                ...m.videos.map(v => ({ ...v, type: 'video' })),
+                ...m.photos.map(p => ({ ...p, type: 'image' }))
+            ];
+
+            allMedia.forEach((item, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'media-item-btn' + (idx === 0 ? ' active' : '');
+                btn.innerHTML = item.type === 'video' ? `▶️ ${item.name}` : `🖼️ ${item.name}`;
+                btn.onclick = () => selectMedia(item, btn);
+                mediaList.appendChild(btn);
+            });
+
+            if (allMedia.length > 0) {
+                showInViewer(allMedia[0]);
+            }
+
+            document.getElementById('detailModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function selectMedia(item, btnEl) {
+            document.querySelectorAll('.media-item-btn').forEach(b => b.classList.remove('active'));
+            btnEl.classList.add('active');
+            showInViewer(item);
+        }
+
+        function showInViewer(item) {
+            const viewer = document.getElementById('mainViewer');
+            if (item.type === 'video') {
+                viewer.innerHTML = `<video src="${item.src}" controls autoplay style="width:100%; height:100%;"></video>`;
+            } else {
+                viewer.innerHTML = `<img src="${item.src}" alt="${item.name}">`;
+            }
+        }
+
+        function closeModal() {
+            const viewer = document.getElementById('mainViewer');
+            viewer.innerHTML = '';
+            document.getElementById('detailModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function closeModalOnBackdrop(e) {
+            if (e.target.id === 'detailModal') {
+                closeModal();
+            }
+        }
+
+        // 초기 렌더링
+        renderMachines('all');
+    </script>
+</body>
+</html>
