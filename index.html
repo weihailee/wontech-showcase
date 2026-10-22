@@ -464,9 +464,9 @@
                 실제 양산 현장의 병목을 해결하기 위해 직접 설계·제작하여 납품한 주문형 자동화 설비 및 지그 포트폴리오입니다.
             </p>
             <div class="stats-bar">
-                <div class="stat-item">전시 장비 분야 <strong>16종</strong></div>
+                <div class="stat-item">전시 장비 분야 <strong>17종</strong></div>
                 <div class="stat-item">실제 가동 동영상 <strong>29편</strong></div>
-                <div class="stat-item">현장 설비 사진 <strong>28장</strong></div>
+                <div class="stat-item">현장 설비 사진 <strong>29장</strong></div>
                 <div class="stat-item"> 제작·견적 문의 <strong>054-462-9864 / 010-9990-9864</strong></div>
             </div>
         </div>
@@ -474,10 +474,10 @@
 
     <div class="filter-container">
         <div class="filter-tabs">
-            <button class="filter-btn active" onclick="filterMachines('all', this)">전체 장비 보기 (16)</button>
+            <button class="filter-btn active" onclick="filterMachines('all', this)">전체 장비 보기 (17)</button>
             <button class="filter-btn" onclick="filterMachines('검사/테스트', this)">검사·테스터 설비</button>
             <button class="filter-btn" onclick="filterMachines('조립/체결/부착', this)">조립·체결·부착·포장 자동화</button>
-            <button class="filter-btn" onclick="filterMachines('로봇/가공/납땜', this)">로봇·납땜·가공기</button>
+            <button class="filter-btn" onclick="filterMachines('로봇/가공/납땜', this)">로봇·납땜·가공·이송기</button>
         </div>
         <div class="guide-tip">💡 각 장비를 클릭하시면 실제 작동 동영상과 여러 각도의 사진을 보실 수 있습니다.</div>
     </div>
@@ -511,6 +511,19 @@
 
     <script>
         const machines = [
+            {
+                id: "rcarrier",
+                category: "로봇/가공/납땜",
+                title: "십자형 4축 연동 R-캐리어 지그 시스템 (R-Carrier)",
+                desc: "중앙 베벨기어/연동 축 메커니즘을 통해 상·하·좌·우 4방향의 슬라이드 암과 클램핑 지그가 동기화되어 작동하는 정밀 센터링 및 이송 캐리어 설비입니다.",
+                specs: ["4방향 동기 슬라이드 구조", "중앙 기어 연동 메커니즘", "이동식 중하중 프레임"],
+                thumbType: "image",
+                thumbSrc: "media_web/SG이노텍_R-carrier/20260809_063846.jpg",
+                videos: [],
+                photos: [
+                    { name: "R-캐리어 4방향 연동 기구부 전체", src: "media_web/SG이노텍_R-carrier/20260809_063846.jpg" }
+                ]
+            },
             {
                 id: "packaging",
                 category: "조립/체결/부착",
