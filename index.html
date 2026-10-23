@@ -539,7 +539,7 @@
                 thumbType: "image",
                 thumbSrc: "media_web/포장기/thumb.jpg",
                 videos: [
-                    { name: "자동 포장기 연속 가동 영상", src: "media_web/포장기/20251205_075917.mp4" }
+                    { name: "자동 포장기 연속 가동 영상", src: "media_web/포장기/20251205_075917.mp4", yt: "https://youtube.com/shorts/G9eYY_tn3jE" }
                 ],
                 photos: [
                     { name: "로터리 포장기 설비 외관", src: "media_web/포장기/thumb.jpg" }
@@ -868,6 +868,20 @@
                 btn.innerHTML = item.type === 'video' ? `▶️ ${item.name}` : `🖼️ ${item.name}`;
                 btn.onclick = () => selectMedia(item, btn);
                 mediaList.appendChild(btn);
+
+                if (item.yt) {
+                    const ytLink = document.createElement('a');
+                    ytLink.href = item.yt;
+                    ytLink.target = '_blank';
+                    ytLink.rel = 'noopener noreferrer';
+                    ytLink.className = 'media-item-btn';
+                    ytLink.style.background = 'rgba(239, 68, 68, 0.2)';
+                    ytLink.style.borderColor = '#ef4444';
+                    ytLink.style.color = '#fff';
+                    ytLink.style.textDecoration = 'none';
+                    ytLink.innerHTML = `🔴 YouTube에서 보기`;
+                    mediaList.appendChild(ytLink);
+                }
             });
 
             if (allMedia.length > 0) {
